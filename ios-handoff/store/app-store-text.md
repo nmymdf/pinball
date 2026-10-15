@@ -8,6 +8,7 @@
 - 副標題(繁中,30 字內):復古美式投幣彈珠檯
 - 副標題(英文,30 字內):Vintage coin-op pinball
 - 主要分類:遊戲 → 街機(Arcade);次分類:遊戲 → 動作(Action)或桌遊(Board),Jay 決定
+- 支援裝置:iPhone 與 iPad(通用 App)
 - Bundle ID(建議):`com.archiekuo.pinball`
 - 版權:© 2026 ArchieKUO
 - 價格:免費;無內購、無廣告
@@ -56,7 +57,7 @@ This is an offline pinball game. No account or login is needed and it makes no n
 - 追蹤:否
 - 出口合規(加密):未使用加密(`ITSAppUsesNonExemptEncryption` 設為 NO)
 
-## 截圖建議(6.9 吋 1320×2868,至少 3 張,繁中與英文各一組)
+## 截圖建議(iPhone 6.9 吋 1320×2868、iPad 13 吋 2064×2752,各至少 3 張,繁中與英文各一組)
 1. 首頁(封面 + 開始遊戲)
 2. 遊戲中:五顆彩色彈跳器與「MISSION START」橫幅
 3. 遊戲中:任務側欄與分數
