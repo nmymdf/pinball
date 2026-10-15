@@ -36,7 +36,8 @@
 | 外殼 | SwiftUI App + `UIViewRepresentable` 包 `WKWebView`;最低 iOS 16 或 17 |
 | 載入方式 | 打包 `game.html` 進 App;用 `loadFileURL(_:allowingReadAccessTo:)` 載入。**驗證:關掉 App 再開,最高分和語言還在**。若會消失,改用自訂網址協定(`WKURLSchemeHandler`)提供同一份檔案,讓 `localStorage` 有穩定的來源 |
 | 版面 | 讓 WebView 放在**安全區內**(上方狀態列/動態島、下方橫條),背景色 `#080503`(與遊戲同色),`contentInsetAdjustmentBehavior = .never`。這樣遊戲不用改 |
-| 方向 | iPhone 只允許直式;iPad 先同樣直式(遊戲在直式有手機版面),橫式要不要支援另議 |
+| 裝置 | **iPhone 與 iPad 都支援(通用 App,爸爸決定)**。爸爸有 iPad 可以測 |
+| 方向 | iPhone 只允許直式;iPad 先做直式(遊戲在直式有手機版面,iPad 直式寬度 < 900 也會用),橫式先鎖掉,之後視實測再決定 |
 | 手勢 | 關掉:縮放、雙擊放大、長按選字/放大鏡、橡皮筋回彈(`scrollView.bounces=false`、`isScrollEnabled=false`);CSS 已有 `touch-action:none`,仍要實機確認 |
 | 多點觸控 | 一定要開(`isMultipleTouchEnabled = true`):左右擋板可能同時按。實機驗證同時按兩邊 |
 | 螢幕 | 玩的時候不自動關螢幕:`UIApplication.shared.isIdleTimerDisabled = true`;隱藏狀態列;`prefersHomeIndicatorAutoHidden = true` |
@@ -44,7 +45,7 @@
 | 背景切換 | 回到桌面再回來,遊戲要暫停或繼續正常(遊戲有處理 `visibilitychange`)。驗證接電話、切 App 後按鍵不會卡住 |
 | 圖示 | `assets/icon-1024.png`(1024×1024、無透明、無圓角,Xcode 會自己切圓角),放進 `AppIcon` |
 | 啟動畫面 | 用原生 Launch Screen:深色底 `#080503` + 中央圖示,避免閃白。**要有**,審核比較看得出是用心做的 App |
-| 名稱 | 中文「鐵道劫案」;英文「Railroad Robbery」。Bundle ID 建議 `com.archiekuo.pinball`(與家族另一個 App `com.archiekuo.travelledger` 同風格,Jay 可改) |
+| 名稱 | 中文「鐵道劫案」;英文「Railroad Robbery」(爸爸已決定)。Bundle ID 建議 `com.archiekuo.pinball`(與家族另一個 App `com.archiekuo.travelledger` 同風格,Jay 可改) |
 | 版本 | 顯示版本沿用遊戲內字樣(v3.10.3);`CFBundleShortVersionString` 寫 `3.10.3`,Build 從 1 開始每次上傳 +1 |
 
 ## 3. 要驗證的事(實機,不是只有模擬器)
@@ -62,7 +63,7 @@
 
 - `store/app-store-text.md`:名稱、副標題、描述(中英)、關鍵字、分類、版權、網址、審核備註、年齡分級答案、隱私問卷答案。
 - 隱私網址:`docs/privacy.html`。網頁要先發布才有網址:GitHub repo → Settings → Pages → 來源選 `main` 的 `/docs`(爸爸那邊尚未啟用,需要他設定;或 Jay 改用自己的網站)。
-- 截圖:iPhone 6.9 吋(1320×2868)至少 3 張,實機或模擬器截;若支援 iPad 還要 iPad 13 吋。可以請爸爸這邊的 Claude 用同一份遊戲產生標準尺寸的截圖。截圖不可含其他平台字樣、不可含電腦鍵盤說明。
+- 截圖:iPhone 6.9 吋(1320×2868)至少 3 張,實機或模擬器截;iPad 13 吋(2064×2752)也要至少 3 張(因為支援 iPad)。可以請爸爸這邊的 Claude 用同一份遊戲產生標準尺寸的截圖。截圖不可含其他平台字樣、不可含電腦鍵盤說明。
 - 審核備註用 `store/app-store-text.md` 裡寫好的那段:說明無需登入、離線、無內購。
 
 ## 5. 審核風險與對策

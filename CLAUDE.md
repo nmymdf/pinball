@@ -42,4 +42,4 @@ Android 打包:推上 `main`,GitHub Actions 自動打包,版本號改 `app/build
 
 ## 目前狀態(每次改版更新)
 - 遊戲 v3.10.3;Android v3.10.3;iPhone:尚未開始(交接文件已備妥)
-- 還沒決定:App Store 上的英文名稱是否用 Railroad Robbery、是否同時支援 iPad
+- 已決定:App Store 英文名稱用 Railroad Robbery;iPhone 與 iPad 都支援(通用 App)
