@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#080503">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>鐵道劫案 RAILROAD ROBBERY · 彈珠檯 v3.10 · 作者：ArchieKUO</title>
+<title>鐵道劫案 RAILROAD ROBBERY · 彈珠檯 v3.10.1 · 作者：ArchieKUO</title>
 <style>
 html,body{margin:0;height:100%;background:#080503;overflow:hidden;touch-action:none}
 canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;display:block;position:fixed;left:0;top:0;width:100%;height:100%}
@@ -24,7 +24,7 @@ canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-web
    鐵道劫案 RAILROAD ROBBERY — 復古美式投幣彈珠檯
    作者：ArchieKUO   版本：v2.0
    ===================================================================== */
-const VERSION='v3.10';
+const VERSION='v3.10.1';
 const AUTHOR='作者：ArchieKUO';
 const TITLE_CN='鐵道劫案', TITLE_EN='RAILROAD ROBBERY';
 const TW=600, TH=1000, R=11, G=960, STEP=1/480, BALLS_PER_GAME=3;
@@ -1499,7 +1499,7 @@ const TXT={zh:{start:'開始遊戲',how:'玩法說明',au:'作者',ok:'知道了
 let lang='en';try{lang=localStorage.getItem('pinball_lang')||(((navigator.language||'').toLowerCase().indexOf('zh')===0)?'zh':'en');}catch(e){}
 if(lang!=='zh'&&lang!=='en')lang='en';
 const d=document.createElement('div');d.id='home';
-d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:20;background:#050302;display:none;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif';
+d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:20;background:#050302;display:none;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif';
 d.innerHTML='<div style="position:absolute;left:-40px;top:-40px;right:-40px;bottom:-40px;background:url('+IMG+') center/cover;filter:blur(24px) brightness(.62)"></div>'
 +'<div id="hbox" style="position:absolute"><img id="himg" src="'+IMG+'" style="width:100%;display:block" draggable="false">'
 +'<div id="hver" style="position:absolute;left:0;right:0;text-align:center;font-style:italic;font-weight:700;color:#ffd24a;font-family:Georgia,\'Noto Serif TC\',serif;text-shadow:0 2px 0 #4a2a06,0 0 10px #000"></div>'
@@ -1510,14 +1510,14 @@ d.innerHTML='<div style="position:absolute;left:-40px;top:-40px;right:-40px;bott
 +'<div id="hhelp" style="position:absolute;left:0;top:0;right:0;bottom:0;display:none;background:rgba(0,0,0,.82);align-items:center;justify-content:center"><div id="hcard" style="width:86%;max-width:420px;border:3px solid #d4af37;border-radius:20px;background:linear-gradient(#1c120a,#0a0604);padding:22px 20px;color:#f3e6c4;box-shadow:0 0 40px rgba(255,170,50,.4)"></div></div>';
 document.body.appendChild(d);
 const $=id=>d.querySelector('#'+id);
-function pill(el,on,txt,u){el.textContent=txt;el.style.fontSize=(42*u)+'px';el.style.lineHeight=(78*u)+'px';el.style.height=(84*u)+'px';el.style.width=(196*u)+'px';el.style.border=(4*u)+'px solid #c9972f';
+function pill(el,on,txt,u){el.textContent=txt;el.style.whiteSpace='nowrap';el.style.overflow='hidden';el.style.fontSize=(34*u)+'px';el.style.lineHeight=(78*u)+'px';el.style.height=(84*u)+'px';el.style.width=(196*u)+'px';el.style.border=(4*u)+'px solid #c9972f';
   el.style.background=on?'linear-gradient(#f5d268,#d19a24)':'linear-gradient(#14100a,#050403)';el.style.color=on?'#2a1804':'#f3dfa8';}
 function layout(){const W=innerWidth,H=innerHeight;const bw=Math.min(W,H/1.5),bh=bw*1.5,u=bw/1024;const b=$('hbox');
   b.style.width=bw+'px';b.style.height=bh+'px';b.style.left=((W-bw)/2)+'px';b.style.top=((H-bh)/2)+'px';
-  const t=TXT[lang];const place=(el,cy,fs)=>{el.style.top=(cy*u-fs*u*.62)+'px';el.style.fontSize=(fs*u)+'px';el.style.lineHeight=(fs*u*1.24)+'px';};
+  const t=TXT[lang];const place=(el,cy,fs)=>{el.style.whiteSpace='nowrap';el.style.top=(cy*u-fs*u*.62)+'px';el.style.fontSize=(fs*u)+'px';el.style.lineHeight=(fs*u*1.24)+'px';};
   const v=$('hver');v.textContent=t.au+' · '+VERSION;place(v,268,46);
-  const s=$('hstart');s.textContent=t.start;place(s,1150,lang==='zh'?96:80);
-  const h=$('hhow');h.textContent=t.how;place(h,1305,lang==='zh'?60:52);
+  const s=$('hstart');s.textContent=t.start;place(s,1150,lang==='zh'?82:68);
+  const h=$('hhow');h.textContent=t.how;place(h,1305,lang==='zh'?52:46);
   const z=(id,x0,y0,x1,y1)=>{const e=$(id);e.style.left=(x0*u)+'px';e.style.top=(y0*u)+'px';e.style.width=((x1-x0)*u)+'px';e.style.height=((y1-y0)*u)+'px';};
   z('hz1',170,1058,855,1240);z('hz2',205,1255,820,1358);
   const p1=$('hp1'),p2=$('hp2');pill(p1,lang==='zh','繁體中文',u);pill(p2,lang==='en','English',u);

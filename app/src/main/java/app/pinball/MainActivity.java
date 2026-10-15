@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         s.setBuiltInZoomControls(false);
         s.setSupportZoom(false);
+        s.setTextZoom(100);
         web.loadUrl("file:///android_asset/index.html");
         hideBars();
     }
