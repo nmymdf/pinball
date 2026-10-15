@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#080503">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>鐵道劫案 RAILROAD ROBBERY · 彈珠檯 v3.10.2 · 作者：ArchieKUO</title>
+<title>鐵道劫案 RAILROAD ROBBERY · 彈珠檯 v3.10.3 · 作者：ArchieKUO</title>
 <style>
 html,body{margin:0;height:100%;background:#080503;overflow:hidden;touch-action:none}
 canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;display:block;position:fixed;left:0;top:0;width:100%;height:100%}
@@ -24,7 +24,7 @@ canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-web
    鐵道劫案 RAILROAD ROBBERY — 復古美式投幣彈珠檯
    作者：ArchieKUO   版本：v2.0
    ===================================================================== */
-const VERSION='v3.10.2';
+const VERSION='v3.10.3';
 const AUTHOR='作者：ArchieKUO';
 const TITLE_CN='鐵道劫案', TITLE_EN='RAILROAD ROBBERY';
 const TW=600, TH=1000, R=11, G=960, STEP=1/480, BALLS_PER_GAME=3;
@@ -41,7 +41,8 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const fmt=n=>Math.round(n).toLocaleString('en-US');
 function rrect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
-function T(c,s,x,y,o){o=o||{};c.font=o.f||('16px '+FSANS);c.textAlign=o.a||'left';c.textBaseline=o.b||'alphabetic';
+function T(c,s,x,y,o){o=o||{};s=TR(s);c.font=o.f||('16px '+FSANS);c.textAlign=o.a||'left';c.textBaseline=o.b||'alphabetic';
+  if(window.GLANG==='en'&&o.a==='center'&&c.font.indexOf('px')>0){const w=c.measureText(s).width;if(w>(o.mw||560)){const fm=c.font.match(/(\d+(?:\.\d+)?)px/);if(fm){c.font=c.font.replace(fm[0],(fm[1]*(o.mw||560)/w).toFixed(1)+'px');}}}
   if(o.st){c.lineWidth=o.sw||3;c.strokeStyle=o.st;c.lineJoin='round';c.strokeText(s,x,y);}
   c.fillStyle=o.c||'#fff';c.fillText(s,x,y);}
 function goldText(c,s,x,y,size,align){
@@ -171,6 +172,106 @@ const MIS_ALL=[
 const MIS=MIS_ALL.slice(0,4);
 function applyMissionSet(){for(let i=0;i<4;i++)MIS[i]=MIS_ALL[(loop%2)*4+i];}
 const WIZ={n:'鐵道劫案',en:'THE GREAT ROBBERY'};
+/* ---------- i18n：選 English 時，遊戲內所有中文字改英文 ---------- */
+window.GLANG='zh';try{window.GLANG=localStorage.getItem('pinball_lang')||(((navigator.language||'').toLowerCase().indexOf('zh')===0)?'zh':'en');}catch(e){}
+if(window.GLANG!=='zh')window.GLANG='en';
+const I18N_E={
+'鐵道劫案  多球':'ROBBERY MULTIBALL','車站':'Station','酒吧':'Saloon','金庫':'Vault','疤面':'Scarface','獨眼':'One-Eye','黑鷹':'Black Hawk','紅鼻':'Red Nose',
+'左環道':'Left Loop','右環道':'Right Loop','道釘':'Spike','通緝':'Wanted','三連貨車':'Freight Cars',
+'煤水補給':'COAL & WATER','貨運連線':'FREIGHT LINE','環線特快':'LOOP EXPRESS','轉轍道岔':'SWITCH YARD','緝捕通緝犯':'WANTED','酒吧亂鬥':'SALOON BRAWL','拼出 TRAIN':'SPELL TRAIN','尋找道釘':'GOLDEN SPIKE',
+'撞擊五色蒸汽汽缸（彈跳器）':'Hit the 5 colored bumpers','打倒左側三連貨車':'Knock down the 3 freight cars','把球打進左右隧道（環道）':'Shoot the left/right loops','轉動上方的轉轍器':'Spin the switch at the top','撞擊上方的通緝令牌':'Hit the wanted posters','把球打進右側酒吧':'Shoot the ball into the saloon','撞擊右側 T-R-A-I-N 標靶':'Hit the T-R-A-I-N targets','撞擊場中央的黃金道釘':'Hit the golden spike',
+'次':'','組':'','圈':'','靶':'',
+'鐵道劫案':'RAILROAD ROBBERY','鐵 道 劫 案':'R A I L R O A D','鐵道劫案 MULTIBALL':'ROBBERY MULTIBALL','鐵道劫案 · 操作說明':'RAILROAD ROBBERY · HOW TO PLAY',
+'破百萬 · 加送一局':'Over 1 million · free game','SPECIAL！破百萬加送一局':'SPECIAL! Over 1 million: free game',
+'破五百萬 · 再送一局':'Over 5 million · another free game','SPECIAL！破五百萬再送一局':'SPECIAL! Over 5 million: another free game',
+'加球一顆！':'One more ball!','EXTRA BALL 加球一顆':'EXTRA BALL!','任務開始':'MISSION START',
+'任務失敗 · 車站可重新挑戰':'Failed · retry at the Station','時間到':"TIME'S UP",
+'車站已上膛':'STATION READY','進站啟動「鐵道劫案」多球':'Enter the Station to start the Robbery multiball',
+'四項任務完成！進車站啟動鐵道劫案':'All 4 missions done! Enter the Station for the Robbery multiball',
+'鐵道劫案 · 三球齊發':'Robbery · three balls','鐵道劫案多球！打亮起的路線收大獎':'Robbery multiball! Hit the lit routes for jackpots',
+'白晝草原':'Daytime prairie','黃昏荒野':'Dusk wilderness','月夜鐵道':'Moonlit railway',
+'亮燈！進車站領取 3,000,000':'Lit! Enter the Station: 3,000,000','500,000 分！':'500,000 points!','神祕獎勵：500,000':'Mystery: 500,000',
+'20 秒 雙倍得分！':'20 s double score!','神祕獎勵：雙倍得分 20 秒':'Mystery: double score 20 s',
+'25 秒 保護球':'25 s ball save','神祕獎勵：保護球 25 秒':'Mystery: ball save 25 s',
+'蒸汽加壓 15 秒':'Steam boost 15 s','神祕獎勵：彈跳器 5 倍':'Mystery: bumpers x5',
+'左外線回彈已上膛':'Left kickback armed','神祕獎勵：回彈':'Mystery: kickback',
+'請先投幣 INSERT COIN':'Insert a coin first','請先投幣':'Insert coin first','遊戲開始！按住空白鍵蓄力發球':'Game start! Hold SPACE to charge and launch',
+'再發一球':'Shoot again','BALL SAVED 球被救回':'BALL SAVED','多球結束':'Multiball over','EXTRA BALL — 再來一球':'EXTRA BALL: shoot again',
+'新最高分！':'New high score!','遊戲結束':'Game over','機台傾斜！':'Machine tilted!','TILT！擋板失效':'TILT! Flippers off','危險！別再搖了':"Careful! Stop shaking",
+'銀級彈跳器':'SILVER BUMPER','金級彈跳器':'GOLD BUMPER','此顆得分提高':'Higher score for this bumper','彈跳器升到銀級':'Bumper upgraded to silver','彈跳器升到金級':'Bumper upgraded to gold',
+'彩虹連擊':'RAINBOW','蒸汽加壓':'STEAM BOOST','五顆全銀級 · 彈跳器 5 倍':'All silver · bumpers x5','五顆升到銀級：蒸汽加壓':'All bumpers silver: steam boost',
+'黃金彈跳器':'GOLD BUMPERS','全金級 · 加球＋雙倍得分':'All gold · extra ball + double score','蒸汽加壓 · 彈跳器 5 倍分':'Steam boost · bumpers x5','蒸汽加壓！彈跳器 5 倍得分':'Steam boost! Bumpers x5',
+'集滿！':'Complete!','T-R-A-I-N 集滿！回彈重新上膛':'T-R-A-I-N complete! Kickback re-armed',
+'全線貫通':'LINE COMPLETE','全線貫通！酒吧亮燈':'Line complete! Saloon lit',
+'搶匪落馬':'BANDIT DOWN','結算倍率提升':'Bonus multiplier up','結算倍率 ×':'Bonus x',
+'擊落搶匪！':'Bandit down!','三連貨車全倒！酒吧亮燈（神祕獎勵）':'Freight cars down! Saloon lit (mystery)','黃金道釘！隱藏獎勵':'Golden spike! Hidden bonus','找到隱藏的黃金道釘！+500,000':'Found the golden spike! +500,000',
+'技巧發球 +50,000':'Skill shot +50,000','技巧發球成功！':'Skill shot!','右回彈！':'Right kickback!','回彈！':'Kickback!','右外線回彈救球':'Right kickback save','左外線回彈救球':'Left kickback save','外線！':'Outlane!',
+'金庫：小獎':'Vault: small prize','車站：小獎':'Station: small prize','加時 +12 秒':'+12 SECONDS','進站加時 +12 秒':'Station: +12 seconds','酒吧：乾杯！先打倒三連貨車可點亮神祕獎勵':'Saloon: cheers! Knock down the freight cars to light mystery',
+'劫火車':'TRAIN ROBBERY','四節車廂全部命中！':'All 4 cars hit!','劫火車成功：四節車廂全部打中':'Train robbed: all 4 cars hit','球回到發球道':'Ball back in the shooter lane',
+'左回彈充能完成':'Left kickback recharged','右回彈充能完成':'Right kickback recharged','微調球位置':'Nudging the ball',
+'水':'WATER','回彈':'KICK','進站開始任務':'Enter: start mission','進站加時':'Enter: +time','進車站領取超級大獎！':'Enter the Station: SUPER JACKPOT!','大獎 ':'JACKPOT ',
+'SPACE 發射':'SPACE: launch','擊落！':'Down!','車廂獎勵 結算':'CAR BONUS','機台 TILT，獎勵取消':'TILT: bonus lost',
+'按 ENTER／空白鍵／點畫面 開始':'Press ENTER / SPACE / click to start','請投幣 INSERT COIN  [C]':'INSERT COIN  [C]','按 H 查看操作說明':'Press H for help',
+'清晨 · 待發':'Dawn · Ready','白晝 · 煤水補給':'Day · Coal & Water','黃昏 · 貨運連線':'Dusk · Freight Line','暮色 · 環線特快':'Twilight · Loop Express','深夜 · 轉轍道岔':'Night · Switch Yard','血月 · 鐵道劫案':'Blood Moon · Robbery',
+'INSERT COIN  ·  請投幣':'INSERT COIN','任務 MISSIONS':'MISSIONS','投幣後進車站開始任務':'Insert a coin, then enter the Station','進車站可加時一次 +12 秒':'Station gives +12 s once',
+'超級大獎亮燈 → 進車站！':'Super jackpot lit: enter the Station!','四項任務完成！啟動三球多球':'All missions done! Start 3-ball multiball','把球打進中央「車站」開始':'Shoot the ball into the Station',
+'三連貨車':'Freight cars','得分 SCORE':'SCORE','最高分 HIGH SCORE':'HIGH SCORE','球 BALL':'BALL','結算倍率 BONUS':'BONUS','操作':'CONTROLS',
+'再發球 SHOOT AGAIN':'SHOOT AGAIN','加球 EXTRA BALL':'EXTRA BALL','多球 MULTIBALL':'MULTIBALL','蒸汽加壓 ×5':'STEAM x5','雙倍得分 ×2':'DOUBLE x2','回彈 KICKBACK':'KICKBACK','酒吧 神祕獎勵':'SALOON MYSTERY','傾斜 TILT':'TILT',
+'投幣開始遊戲':'Insert coin to start','按住空白鍵蓄力發球':'Hold SPACE to launch','投幣 [C]':'COIN [C]','開始 [Enter]':'START [Enter]','暫停 [P]':'PAUSE [P]',
+'空白鍵發球 · Z 與 / 擋板 · A D 搖機 · H 說明':'SPACE launch · Z and / flippers · A D nudge · H help',
+'空白鍵':'SPACE','按住蓄力、放開發球':'Hold to charge, release to shoot','Z（或 X、←）':'Z (or X, ←)','左擋板':'Left flipper','/（或 .、→）':'/ (or ., →)','右擋板':'Right flipper','A D ↑ · H':'A D ↑ · H','搖機（太多會 TILT）· 說明':'Nudge (too much = TILT) · Help',
+'投幣；Enter 開始遊戲':'Insert coin; Enter to start','空白鍵 / ↓':'SPACE / ↓','按住蓄力、放開發射（約 5～6 成力以上才會到頂）':'Hold to charge, release to launch (about 60% power to reach the top)',
+'Z 或 X 或 ←':'Z or X or ←','左擋板（同時切換上方燈道亮燈位置）':'Left flipper (also shifts the top lane lights)','/ 或 . 或 →':'/ or . or →','A / D / ↑':'A / D / ↑','向左／右／上搖機（搖太多次會 TILT）':'Nudge left / right / up (too many = TILT)','P M V F H':'P M V F H','暫停 · 靜音 · 透視 · 全螢幕 · 說明':'Pause · Mute · Perspective · Fullscreen · Help',
+'怎麼玩':'HOW TO PLAY','按 H 或任意鍵關閉':'Press H or any key to close',
+'發射':'LAUNCH','搖機':'NUDGE','繼續':'RESUME','暫停':'PAUSE','再發':'SAVE','多球':'MULTI','傾斜':'TILT','點一下螢幕開始':'Tap to start','點一下投幣':'Tap to insert coin','暫停 PAUSED':'PAUSED','點一下繼續':'Tap to resume','按 P 繼續':'Press P to resume',
+'靜音':'Muted','開啟音效':'Sound on','歡迎光臨！點一下螢幕開始':'Welcome! Tap the screen to start','歡迎光臨！按 C 投幣、Enter 開始':'Welcome! Press C for coin, Enter to start',
+'球掉進金庫，駛入劫火車車廂！':'The ball fell into the Vault: onto the train!','劫火車！':'TRAIN ROBBERY!','進場獎勵 +50,000 · 車廂內得分 ×2':'Entry bonus +50,000 · x2 score inside','劫火車車廂：得分 ×2，有兩顆球':'Train car: x2 score, two balls',
+'出局！這顆球沒有了':'Drained! Ball lost','出口開啟':'EXIT OPEN','把球打進保險箱出口！':'Shoot the ball into the safe!','出口開啟：打進保險箱就能回球檯':'Exit open: shoot the safe to go back',
+'劫車成功！':'ROBBERY SUCCESS!','劫車成功！平安回到球檯':'Success! Back on the table','保險箱出口':'SAFE EXIT','打進保險箱，準備回球檯':'Safe hit, returning to the table','保險箱還鎖著，先撞亮所有目標':'The safe is locked: light all targets first',
+'再來一球':'ANOTHER BALL','車廂護欄 · 還有一球':'Car rail · one more ball','回球檯':'BACK ON TABLE','幸運！球回到原本球檯':'Lucky! Ball returns to the table','出局':'DRAINED','運氣不好 · 這顆球沒有了':'Bad luck · ball lost','回到原本球檯':'Back on the table',
+'列車進站':'TRAIN ARRIVES','時間到 · 平安回到球檯':"Time's up · back safely",'列車進站，回到球檯':'Train arrived, back on the table',
+'金幣全收':'ALL COINS','+5 秒 · 金幣重新出現':'+5 s · coins respawn','金幣全收！+5 秒':'All coins! +5 s','擊落搶匪！+3 秒':'Bandit down! +3 s',
+'駛入劫火車車廂':'ONTO THE TRAIN','進場獎勵 +50,000 · 得分 ×2':'Entry bonus +50,000 · x2 score','保險箱':'SAFE','通緝':'WANTED'
+};
+const I18N_R=[
+[/^任務：(.*) ×(\d+)$/,(m,a,b)=>'Mission: '+TR(a)+' x'+b],
+[/^任務完成：(.*)$/,(m,a)=>'Mission complete: '+TR(a)],
+[/^任務失敗：(.*)$/,(m,a)=>'Mission failed: '+TR(a)],
+[/^(.*)  (.*)$/,(m,a,b)=>{const x=TR(a),y=TR(b);return x===y?x:(/[一-鿿]/.test(y)?x:x+'  '+y);}],
+[/^第 (\d+) 輪$/,(m,a)=>'Round '+a],
+[/^劫案成功！進入第 (\d+) 輪，任務目標提高$/,(m,a)=>'Robbery done! Round '+a+': harder goals'],
+[/^連擊 ×(\d+) ！?$/,(m,a)=>'Combo x'+a],[/^連擊 ×(\d+)$/,(m,a)=>'COMBO x'+a],
+[/^神祕獎勵：倍率 ×(\d+)$/,(m,a)=>'Mystery: multiplier x'+a],[/^結算倍率 ×(\d+)$/,(m,a)=>'Bonus x'+a],
+[/^第 (\d+) 球$/,(m,a)=>'BALL '+a],[/^第 (\d+) 球結束$/,(m,a)=>'Ball '+a+' over'],
+[/^投幣 CREDIT (\d+)$/,(m,a)=>'CREDIT '+a],
+[/^遊戲結束 — 得分 (.*)$/,(m,a)=>'Game over: score '+a],[/^GAME OVER  得分 (.*)$/,(m,a)=>'GAME OVER  SCORE '+a],
+[/^路線：(.*) 站亮起 \((\d+)\/6\)$/,(m,a,b)=>'Route: '+TR(a)+' lit ('+b+'/6)'],
+[/^路線牌 (.*)$/,(m,a)=>TR(a)],
+[/^通緝犯「(.*)」落網！$/,(m,a)=>'Outlaw "'+TR(a)+'" caught!'],
+[/^鐵路路線完成 \+(.*)$/,(m,a)=>'Railway complete +'+a],
+[/^全員落網！ \+(.*)$/,(m,a)=>'All caught! +'+a],
+[/^抓到搶匪三次：倍率 ×(\d+)$/,(m,a)=>'Bandit x3: multiplier x'+a],
+[/^擊落搶匪！(\d+) 次後倍率\+1$/,(m,a)=>'Bandit down! Multiplier +1 in '+a],
+[/^黃金道釘 (\d+)\/3$/,(m,a)=>'Golden spike '+a+'/3'],
+[/^超級大劫案！(.*)$/,(m,a)=>'SUPER ROBBERY! '+a],
+[/^五色全亮 · 結算倍率 ×(\d+)$/,(m,a)=>'All five lit · bonus x'+a],[/^五色彈跳器全部打過：彩虹獎勵.*$/,'All 5 bumpers hit: rainbow bonus'],
+[/^集滿！ \+(.*)$/,(m,a)=>'Complete! +'+a],
+[/^大獎 (.*)　(\d+)\/3$/,(m,a,b)=>'JACKPOT '+a+'  '+b+'/3'],[/^大獎 (.*)$/,(m,a)=>'JACKPOT '+a],
+[/^= (.*)$/,(m,a)=>'= '+a],
+[/^打亮燈的路線：(.*)$/,(m,a)=>'Hit the lit route: '+TR(a)],[/^下一個：(.*)$/,(m,a)=>'Next: '+TR(a)],
+[/^環道 (\d+) 次　　彈跳器 (\d+) 次$/,(m,a,b)=>'Loops '+a+'   Bumpers '+b],
+[/^累積獎勵 (.*)$/,(m,a)=>'Bonus '+a],[/^\+(\d+) 加球$/,(m,a)=>'+'+a+' EXTRA'],
+[/^球掉了！抽出口：回球檯 (\d+)% ／ 出局 (\d+)%$/,(m,a,b)=>'Ball lost! Exit draw: back '+a+'% / drain '+b+'%'],
+[/^COMBO ×(\d+)　得分 ×(\d+)$/,(m,a,b)=>'COMBO x'+a+'   SCORE x'+b],
+[/^(.*) 多球$/,(m,a)=>TR(a)+' MULTIBALL'],
+[/^進站加時 \+12 秒$/,'+12 s'],
+];
+function TR(s){
+  if(window.GLANG!=='en'||typeof s!=='string'||!/[一-鿿]/.test(s))return s;
+  if(Object.prototype.hasOwnProperty.call(I18N_E,s))return I18N_E[s];
+  for(const r of I18N_R){const m=s.match(r[0]);if(m)return typeof r[1]==='function'?r[1].apply(null,m):r[1];}
+  return s;
+}
 
 /* ---------- messages / fx ---------- */
 function say(s){msgs.unshift({s:s,t:time});if(msgs.length>6)msgs.pop();}
@@ -917,9 +1018,9 @@ function drawBackglass(c,x,y,w,h){
   if(sceneMix<1){c.globalAlpha=sceneMix;drawScene(c,x,y,w,h,cs,time);c.globalAlpha=1;}
   const ts=Math.max(16,w*.115);
   c.save();if('letterSpacing' in c)c.letterSpacing=Math.round(ts*.12)+'px';
-  T(c,TITLE_CN,x+w/2,y+ts*1.15,{f:'900 '+ts+'px '+FSANS,a:'center',c:'#ffd75e',st:'#2a0e02',sw:Math.max(3,ts*.16)});c.restore();
+  T(c,TITLE_CN,x+w/2,y+ts*1.15,{f:'900 '+ts+'px '+FSANS,a:'center',mw:w*.9,c:'#ffd75e',st:'#2a0e02',sw:Math.max(3,ts*.16)});c.restore();
   T(c,TITLE_EN,x+w/2,y+ts*1.15+ts*.55,{f:'italic 700 '+Math.round(ts*.4)+'px '+FSERIF,a:'center',c:'#fff1c8',st:'#2a0e02',sw:Math.max(2,ts*.1)});
-  const nm=state==='attract'?'INSERT COIN  ·  請投幣':SCENES[cs].name+(loop>0?'（第'+(loop+1)+'輪）':'');
+  const nm=state==='attract'?'INSERT COIN  ·  請投幣':TR(SCENES[cs].name)+(loop>0?(window.GLANG==='en'?' (round '+(loop+1)+')':'（第'+(loop+1)+'輪）'):'');
   const bh=Math.max(22,h*.09);c.fillStyle='rgba(10,4,0,.7)';c.fillRect(x,y+h-bh,w,bh);
   T(c,nm,x+w/2,y+h-bh*.3,{f:'bold '+Math.round(bh*.55)+'px '+FSANS,a:'center',c:'#ffe27a'});
   c.strokeStyle='#b8860b';c.lineWidth=6;rrect(c,x-3,y-3,w+6,h+6,12);c.stroke();c.strokeStyle='#f5d76e';c.lineWidth=2;rrect(c,x+1,y+1,w-2,h-2,9);c.stroke();
@@ -1058,13 +1159,19 @@ function drawHelp(c){
     ['A / D / ↑','向左／右／上搖機（搖太多次會 TILT）'],['P M V F H','暫停 · 靜音 · 透視 · 全螢幕 · 說明']];
   for(const r of rows){T(c,r[0],x,y,{f:'bold '+Math.round(19*u)+'px monospace',c:'#9fe8ff'});T(c,r[1],x+bw*.30,y,{f:Math.round(18*u)+'px '+FSANS,c:'#f4e6c4'});y+=31*u;}
   y+=10*u;T(c,'怎麼玩',x,y,{f:'bold '+Math.round(22*u)+'px '+FSANS,c:'#ffd75e'});y+=30*u;
-  const tips=['把球打進中央「車站」開始任務（限時，進站可加時）。每打完一輪「鐵道劫案」，任務組合、天色與目標都會換新。',
+  const tips=window.GLANG==='en'?['Shoot the ball into the center Station to start a timed mission (entering the Station adds time once). After each Robbery round, missions, sky and goals change.',
+    'Light all four Wanted posters at the top to catch the outlaws; light all six route signs (Left Loop, Right Loop, Saloon, Station, Spike, Wanted) for the Line Complete jackpot.',
+    'The Vault hole at the top right sends the ball onto a train car (x2 score) with TNT barrels, bandits, coins and combos. When the ball is lost you draw an exit: about 90% return to the table, few drain.',
+    'In the car: light the TNT barrels and side wanted signs to open the safe, then shoot it. The more you light, the better the chance of returning; 3 big hits or time-up also bring you back safely.',
+    'After all four missions, the Station starts the 3-ball Robbery multiball: hit the lit routes for JACKPOT, and after three, enter the Station for the 3,000,000 super jackpot.',
+    'Also: combos, skill shot, bonus multiplier, steam boost, saloon mystery, golden spike, and a free game at 1 million.']:['把球打進中央「車站」開始任務（限時，進站可加時）。每打完一輪「鐵道劫案」，任務組合、天色與目標都會換新。',
     '上方四塊「通緝令牌」撞亮即抓到通緝犯；「路線牌」六站（左環道、右環道、酒吧、車站、道釘、通緝）全亮 → 全線貫通大獎。',
     '右上角的「金庫」洞：球掉進去會自動駛入劫火車車廂（得分 ×2）。車廂內有 TNT 桶、搶匪、金幣和連擊；球掉了抽「出口」，九成以上回到球檯，只有少數出局。',
     '車廂內：撞亮 TNT 桶和兩側通緝牌 → 保險箱開啟 → 打進去；撞亮越多、開保險箱越多，回球檯的機率越高；三次大成功或時間到都會平安回去。',
     '四項任務完成後車站啟動三球「鐵道劫案」多球：打亮燈路線收 JACKPOT，三次後進車站領 300 萬超級大獎。',
     '還有連擊、技巧發球、結算倍率、蒸汽加壓、酒吧神祕獎勵、黃金道釘、破百萬送一局。'];
-  for(const t of tips){c.font=Math.round(17*u)+'px '+FSANS;let line='',yy=y;for(const ch of t){if(c.measureText(line+ch).width>bw-24){T(c,line,x+12,yy,{f:Math.round(17*u)+'px '+FSANS,c:'#e9d6aa'});line='';yy+=24*u;}line+=ch;}T(c,line,x+12,yy,{f:Math.round(17*u)+'px '+FSANS,c:'#e9d6aa'});y=yy+30*u;}
+  const wrapT=t=>{c.font=Math.round(17*u)+'px '+FSANS;const toks=window.GLANG==='en'?t.split(' ').map((w,i)=>i?' '+w:w):Array.from(t);let line='',yy=y;for(const ch of toks){if(c.measureText(line+ch).width>bw-24){T(c,line,x+12,yy,{f:Math.round(17*u)+'px '+FSANS,c:'#e9d6aa'});line=ch.trimStart();yy+=24*u;}else line+=ch;}T(c,line,x+12,yy,{f:Math.round(17*u)+'px '+FSANS,c:'#e9d6aa'});y=yy+30*u;};
+  for(const t of tips)wrapT(t);
   T(c,'按 H 或任意鍵關閉',W/2,H*.965,{f:Math.round(17*u)+'px '+FSANS,a:'center',c:'#9a8566'});
 }
 function drawMobileTop(c){
@@ -1080,7 +1187,7 @@ function drawMobileTop(c){
   const lw=Math.min(46,(W-190)/4);for(let i=0;i<4;i++)lampBox(c,W-10-(4-i)*(lw+4),y2+2,lw,22,lamps[i][0],!!lamps[i][1],lamps[i][2]);
   const m=msgs[0];if(m&&time-m.t<7){c.save();c.beginPath();c.rect(0,hh-2,W,0);c.restore();}
 }
-function mbtn(c,r,label,on,fs){const g=c.createLinearGradient(0,r.y,0,r.y+r.h);g.addColorStop(0,on?'#f5d76e':'#6a4a18');g.addColorStop(1,on?'#c8962a':'#2e1c08');c.globalAlpha=on?.95:.72;c.fillStyle=g;rrect(c,r.x,r.y,r.w,r.h,16);c.fill();c.globalAlpha=1;c.strokeStyle='#d4af37';c.lineWidth=2.5;rrect(c,r.x,r.y,r.w,r.h,16);c.stroke();T(c,label,r.x+r.w/2,r.y+r.h/2+fs*.35,{f:'bold '+fs+'px '+FSANS,a:'center',c:on?'#2a1204':'#f3d98a'});}
+function mbtn(c,r,label,on,fs){const g=c.createLinearGradient(0,r.y,0,r.y+r.h);g.addColorStop(0,on?'#f5d76e':'#6a4a18');g.addColorStop(1,on?'#c8962a':'#2e1c08');c.globalAlpha=on?.95:.72;c.fillStyle=g;rrect(c,r.x,r.y,r.w,r.h,16);c.fill();c.globalAlpha=1;c.strokeStyle='#d4af37';c.lineWidth=2.5;rrect(c,r.x,r.y,r.w,r.h,16);c.stroke();T(c,label,r.x+r.w/2,r.y+r.h/2+fs*.35,{f:'bold '+fs+'px '+FSANS,a:'center',mw:r.w*.88,c:on?'#2a1204':'#f3d98a'});}
 function drawMobileUI(c){
   const hh=hudH(),ch=ctlH();
   // 訊息列（貼在球檯上緣）
@@ -1497,7 +1604,7 @@ const TXT={zh:{start:'開始遊戲',how:'玩法說明',au:'作者',ok:'知道了
  en:{start:'START GAME',how:'HOW TO PLAY',au:'Author',ok:'OK',ht:'HOW TO PLAY',
   hl:['Flippers: hold the big buttons at the bottom left / right.','Launch: hold LAUNCH to charge, release to shoot.','Nudge: tap NUDGE to shake the table. Too much causes TILT.','Goal: hit the bumpers, finish missions, shoot into the station.']}};
 let lang='en';try{lang=localStorage.getItem('pinball_lang')||(((navigator.language||'').toLowerCase().indexOf('zh')===0)?'zh':'en');}catch(e){}
-if(lang!=='zh'&&lang!=='en')lang='en';
+if(lang!=='zh'&&lang!=='en')lang='en';window.GLANG=lang;
 const d=document.createElement('div');d.id='home';
 d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:20;background:#050302;display:none;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif';
 d.innerHTML='<div style="position:absolute;left:-40px;top:-40px;right:-40px;bottom:-40px;background:url('+IMG+') center/cover;filter:blur(24px) brightness(.62)"></div>'
@@ -1523,7 +1630,7 @@ function layout(){const W=innerWidth,H=innerHeight;const S=Math.max(W/1024,H/153
   const p1=$('hp1'),p2=$('hp2');pill(p1,lang==='zh','繁體中文',u);pill(p2,lang==='en','English',u);
   p1.style.left=(302*u)+'px';p2.style.left=(526*u)+'px';p1.style.top=p2.style.top=(1378*u)+'px';
 }
-function setLang(l){lang=l;try{localStorage.setItem('pinball_lang',l);}catch(e){}layout();}
+function setLang(l){lang=l;window.GLANG=l;try{localStorage.setItem('pinball_lang',l);}catch(e){}layout();}
 function showHelpCard(){const t=TXT[lang];const c=$('hcard');c.innerHTML='<div style="font:900 24px/1.2 sans-serif;color:#ffd75e;text-align:center;margin-bottom:12px">'+t.ht+'</div>'
   +t.hl.map(x=>'<div style="font:600 17px/1.5 sans-serif;margin:9px 0">'+x+'</div>').join('')
   +'<div id="hok" style="margin-top:16px;padding:12px 0;text-align:center;font:800 20px sans-serif;border-radius:14px;background:linear-gradient(#f5d268,#d19a24);color:#2a1804">'+t.ok+'</div>';

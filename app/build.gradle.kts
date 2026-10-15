@@ -10,8 +10,8 @@ android {
         applicationId = "app.pinball"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
-        versionName = "3.10.2"
+        versionCode = 6
+        versionName = "3.10.3"
     }
 
     signingConfigs {
